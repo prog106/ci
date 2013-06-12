@@ -36,6 +36,11 @@
 |
 */
 
+$hook['post_controller_constructo'][] = array(
+    'function' => 'b_check',
+    'filename' => 'browser_check.php',
+    'filepath' => 'hooks'
+);
 
 /* End of file hooks.php */
 /* Location: ./application/config/hooks.php */
