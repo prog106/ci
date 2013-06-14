@@ -22,7 +22,7 @@
         <div class="navbar-inner">
             <ul class="nav">
                 <li><a href="/">Home</a></li>
-                <li><a href="adform">AD add</a></li>
+                <li><a href="/adform/add">AD add</a></li>
             </ul>
         </div>
     </div>
