@@ -5,6 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <title><?=$title?></title>
 <link href="/static/css/layout.css" rel="stylesheet" type="text/css" charset="utf-8"/>
+<link href="/static/css/uploadify.css" rel="stylesheet" type="text/css" charset="utf-8"/>
 <link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" charset="utf-8"/>
 <link href="/static/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" charset="utf-8"/>
 <script src="/static/js/jquery-1.9.1.min.js"></script>

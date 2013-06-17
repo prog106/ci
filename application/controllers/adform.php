@@ -49,11 +49,15 @@ class Adform extends CI_Controller {
         $msg = ($result)? "Insert Success!" : "Insert False! Retry!";
         echo json_encode($msg);
     }
-    function adimageinsert() {
-        $tmpfile = $_FILES['Filedata']['tmp_name'];
-
-        move_uploaded_file($tmpfile, '/home/prog106/ci/static/upload/123.jpg');
-        echo 1;
+    function admodify() {
+        $param['id'] = $this->input->post('id');
+        $input_array = array('title', 'desc', 'startdate', 'enddate', 'money', 'img1', 'img2');
+        foreach($input_array as $k) {
+            $param['ad_'.$k] = $this->input->post($k);
+        }
+        $result = $this->adinfo->ad_modify($param);
+        $msg = ($result)? "Modify Success!" : "Modify False! Retry!";
+        echo json_encode($msg);
     }
 }
 ?>

@@ -19,5 +19,12 @@ class Adinfo extends CI_Model {
         $result = $this->db->insert('ad', $param);
         return $result;
     }
+
+    function ad_modify($param) {
+        $this->db->where('id', $param['id']);
+        unset($param['id']);
+        $result = $this->db->update('ad', $param);
+        return $result;
+    }
 }
 ?>

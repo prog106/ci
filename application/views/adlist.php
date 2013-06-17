@@ -7,7 +7,7 @@
             $imgurl = $row['ad_img1'];
         ?>
         <div class="span4">
-            <a href="adform/edit?id=<?=$row['id'];?>"><img src="<?=$imgurl;?>" class="img-polaroid"></a>
+            <a href="adform/edit?id=<?=$row['id'];?>"><img src="/static/upload/<?=$imgurl;?>" class="img-polaroid"></a>
             <p class="text-left"><strong><?=$title;?></strong><br><?=$admoney;?> won / <?=$desc;?></p>
         </div>
         <?

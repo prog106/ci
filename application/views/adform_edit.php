@@ -1,15 +1,23 @@
     <script type="text/javascript">
-        function readURL(input, tmp) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    $('#'+tmp).attr('src', e.target.result);
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
+        function frm_admodify_submit() {
+            var frm = $('#frm_admodify').serialize();
+            $.ajax({
+                url : '/adform/admodify',
+                type : 'POST',
+                data : frm,
+                datatype : 'json',
+                success : function(data) {
+                    alert(data);
+                    location.href='/adform';
+                },
+                error : function(x,e) {
+                    alert(x.status);
+                    alert(e);
+                },
+            });
         }
     </script>
-    <form class="form-horizontal" action="adupdate" method="post" enctype="multipart/form-data">
+    <form class="form-horizontal" method="post" id="frm_admodify" enctype="multipart/form-data">
     <input type="hidden" name="tps" value="update">
     <input type="hidden" name="id" value="<?=$row['id'];?>">
         <div class="control-group">
@@ -55,28 +63,80 @@
         <div class="control-group">
             <label class="control-label" for="img1">main images</label>
             <div class="controls">
-                <? if($row['ad_img1']) { ?><img src="<?=$row['ad_img1'];?>"><? } ?>
-                <img id="review1" src="#" />
-                <input type="file" id="img1" name="img1" placeholder="main image" onchange="readURL(this, 'review1');">
+                <input type="file" id="_img1" name="_img1" placeholder="main image">
+                <input type="hidden" id="img1" name="img1">
+                <span id="review1"></span>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="img2">contents images</label>
             <div class="controls">
-                <? if($row['ad_img2']) { ?><img src="<?=$row['ad_img2'];?>"><? } ?>
-                <img id="review2" src="#" />
-                <input type="file" id="img2" name="img2" placeholder="contents images" onchange="readURL(this, 'review2');">
+                <input type="file" id="_img2" name="_img2" placeholder="contents images">
+                <input type="hidden" id="img2" name="img2">
+                <span id="review2"></span>
             </div>
         </div>
         <div class="control-group">
             <div class="controls">
-                <button type="submit" class="btn">Modify</button>
+                <button type="button" id="frm_admodify_btn" class="btn">Modify</button>
             </div>
         </div>
     </form>
     <script>
+        <? $time = time(); ?>
         $(function() {
             $('#datetimepicker1').datetimepicker({ language: 'pt-BR' });
             $('#datetimepicker2').datetimepicker({ language: 'pt-BR' });
+            $('#_img1').uploadify({
+                'formData' : {
+                    'timestamp' : '<?=$time;?>',
+                    'token' : '<?=md5('prog106'.$time);?>',
+                    'fileTypeDesc' : 'Image Files',
+                    'fileTypeExts' : '*.jpg, *.gif, *.png',
+                    'fileSizeLimit' : '100KB',
+                },
+                'swf' : '/static/js/uploadify.swf',
+                'uploader' : '/imgctrl/imageinsert',
+                'onUploadSuccess' : function(file, data) {
+                    $('#img1').val(data);
+                    $('#review1').html('<img src="/static/upload/' + data + '">');
+                }
+            });
+            $('#_img2').uploadify({
+                'formData' : {
+                    'timestamp' : '<?=$time;?>',
+                    'token' : '<?=md5('prog106'.$time);?>',
+                    'fileTypeDesc' : 'Image Files',
+                    'fileTypeExts' : '*.jpg, *.gif, *.png',
+                    'fileSizeLimit' : '100KB',
+                },
+                'swf' : '/static/js/uploadify.swf',
+                'uploader' : '/imgctrl/imageinsert',
+                'onUploadSuccess' : function(file, data) {
+                    $('#img2').val(data);
+                    $('#review2').html('<img src="/static/upload/' + data + '">');
+                }
+            });
+            <? if($row['ad_img1']) { ?>
+            $('#review1').html('<img src="/static/upload/<?=$row['ad_img1'];?>">');
+            $('#img1').val('<?=$row['ad_img1'];?>');
+            <? } ?>
+            <? if($row['ad_img2']) { ?>
+            $('#review2').html('<img src="/static/upload/<?=$row['ad_img2'];?>">');
+            $('#img2').val('<?=$row['ad_img2'];?>');
+            <? } ?>
         });
+        $('#frm_admodify_btn').click(function() {
+            var chkId = ['title', 'desc', 'startdate', 'enddate', 'money'];
+            var chkMsg =['title', 'desc', 'start_date', 'end_date', 'money', 'image1', 'image2'];
+            for(var i=0;i<chkId.length;i++) {
+                if($('#' + chkId[i]).val() == '') {
+                    alert(chkMsg[i] + ' is Null!');
+                    $('#' + chkId[i]).focus();
+                    return false;
+                }
+            }
+            frm_admodify_submit();
+        });
+    </script>
     </script>

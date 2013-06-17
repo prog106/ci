@@ -1,20 +1,10 @@
     <script type="text/javascript">
-        function readURL(input, tmp) {
-            alert(1);
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    $('#'+tmp).attr('src', e.target.result);
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
         function frm_adinsert_submit() {
-            var frm = $('#frm_adinsert');
+            var frm = $('#frm_adinsert').serialize();
             $.ajax({
                 url : '/adform/adinsert',
                 type : 'POST',
-                data : frm.serialize(),
+                data : frm,
                 datatype : 'json',
                 success : function(data) {
                     alert(data);
@@ -72,15 +62,17 @@
         <div class="control-group">
             <label class="control-label" for="img1">main images</label>
             <div class="controls">
-                <img id="review1" src="#" />
-                <input type="file" id="img1" name="img1" placeholder="main image" onchange="readURL(this, 'review1');">
+                <input type="file" id="_img1" name="_img1" placeholder="main image">
+                <input type="hidden" id="img1" name="img1">
+                <span id="review1"></span>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="img2">contents images</label>
             <div class="controls">
-                <img id="review2" src="#" />
-                <input type="file" id="img2" name="img2" placeholder="contents images" onchange="readURL(this, 'review2');">
+                <input type="file" id="_img2" name="_img2" placeholder="contents images">
+                <input type="hidden" id="img2" name="img2">
+                <span id="review2"></span>
             </div>
         </div>
         <div class="control-group">
@@ -90,12 +82,39 @@
         </div>
     </form>
     <script>
+        <? $time = time(); ?>
         $(function() {
             $('#datetimepicker1').datetimepicker({ language: 'pt-BR' });
             $('#datetimepicker2').datetimepicker({ language: 'pt-BR' });
-            $('#img1').uploadify({
+            $('#_img1').uploadify({
+                'formData' : {
+                    'timestamp' : '<?=$time;?>',
+                    'token' : '<?=md5('prog106'.$time);?>',
+                    'fileTypeDesc' : 'Image Files',
+                    'fileTypeExts' : '*.jpg, *.gif, *.png',
+                    'fileSizeLimit' : '100KB',
+                },
                 'swf' : '/static/js/uploadify.swf',
-                'uploader' : '/adform/adimageinsert',
+                'uploader' : '/imgctrl/imageinsert',
+                'onUploadSuccess' : function(file, data) {
+                    $('#img1').val(data);
+                    $('#review1').html('<img src="/static/upload/' + data + '">');
+                }
+            });
+            $('#_img2').uploadify({
+                'formData' : {
+                    'timestamp' : '<?=$time;?>',
+                    'token' : '<?=md5('prog106'.$time);?>',
+                    'fileTypeDesc' : 'Image Files',
+                    'fileTypeExts' : '*.jpg, *.gif, *.png',
+                    'fileSizeLimit' : '100KB',
+                },
+                'swf' : '/static/js/uploadify.swf',
+                'uploader' : '/imgctrl/imageinsert',
+                'onUploadSuccess' : function(file, data) {
+                    $('#img2').val(data);
+                    $('#review2').html('<img src="/static/upload/' + data + '">');
+                }
             });
         });
         $('#frm_adinsert_btn').click(function() {
