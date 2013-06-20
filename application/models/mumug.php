@@ -6,12 +6,12 @@ class Mumug extends CI_Model {
         $this->load->database();
     }
 
-    function mu_list($where='', $order='', $limit='') {
+    function mu_list($where='', $order='', $limit='', $param=array()) {
         $query = "SELECT * FROM mumug";
         $query .= (!empty($where))? " WHERE ". $where : '';
         $query .= (!empty($order))? " ORDER BY ".$order : '';
         $query .= (!empty($limit))? " LIMIT ".$limit['start'].", ".$limit['cnt'] : '';
-        $result = $this->db->query($query)->result_array();
+        $result = $this->db->query($query, $param)->result_array();
         return $result;
     }
 
@@ -20,5 +20,13 @@ class Mumug extends CI_Model {
         return $result;
     }
 
+    function reply_list($where='', $order='', $limit='', $param=array()) {
+        $query = "SELECT * FROM mumug_reply";
+        $query .= (!empty($where))? " WHERE ". $where : '';
+        $query .= (!empty($order))? " ORDER BY ".$order : '';
+        $query .= (!empty($limit))? " LIMIT ".$limit['start'].", ".$limit['cnt'] : '';
+        $result = $this->db->query($query, $param)->result_array();
+        return $result;
+    }
 }
 ?>

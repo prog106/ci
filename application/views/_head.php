@@ -16,14 +16,14 @@
 </head>
 <body>
 <div class="container">
-    <div class="header">
-        <h1>AD for U</h1>
-    </div>
-    <div class="navbar">
+    <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
-            <ul class="nav">
-                <li><a href="/">Home</a></li>
-                <li><a href="/adform/add">AD add</a></li>
-            </ul>
+            <div class="container">
+                <ul class="nav" style="margin-left:30px;">
+                    <li><a class="brand" href="/mumu">MaCham</a>
+                    <li><a href="/mumu">Home</a></li>
+                </ul>
+            </div>
         </div>
     </div>
+    <div style="height:50px;"></div>

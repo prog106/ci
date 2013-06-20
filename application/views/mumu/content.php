@@ -3,7 +3,7 @@
     .btn { height:80px; }
     .table tr { border:0px solid #000; }
     .table th { text-align:center; }
-    .table td { vertical-align:middle;padding:10px 22px 10px 20px;border-top:0px;border:0px solid #000; }
+    .table td { vertical-align:middle;padding:10px 22px 0px 20px;border-top:0px;border:0px solid #000; }
     .table .thside { width:70px; }
     .table .thcenter { width:180px; }
     .table .tdgap { border-bottom:1px solid #CCC; }
@@ -28,35 +28,16 @@
             });
         }
         function view_comment(srl) {
-            var op = $('#toggle').val();
-            if(op == '1') {
-                $('#toggle').val('2');
-                viewreply(srl);
-            } else {
-                $('#toggle').val('1');
-                closereply();
-            }
-        }
-        function viewreply(srl) {
-            $.get('mumu/viewhtml', function(data) {
-                $('#'+srl).after(data);
-            });
-        }
-        function closereply() {
-            $('#view').hide();
+            $('#view_comment').load('/mumu/viewcomment', { 'srl' : srl } );
         }
     </script>
-    <input type="hidden" id="toggle" name="toggle" value="1">
     <table class="table">
         <tr>
             <td class="comment">
                 <table style="width:564px;">
                     <thead>
-                    <? 
-                    $nowdate = date('Y-m-d');
-                    ?>
                     <tr>
-                        <th><?=$nowdate;?></th>
+                        <th><h6>[<?=substr($maincomment['mu_create_date'], 11,8);?>] <h5><?=$maincomment['mu_comment'];?></h5> - <?=$maincomment['mu_eater'];?></h6></th>
                     </tr>
                     </thead>
                     <tr>
@@ -65,12 +46,15 @@
                     <?php
                     foreach($lists as $row) {
                     ?>
-                    <tr class="tdgap" id="<?=$row['mu_id'];?>">
+                    <tr>
                         <td>
                             [<?=substr($row['mu_create_date'],11,8);?>]
                             <a href="javascript:view_comment(<?=$row['mu_id'];?>)"><?=$row['mu_comment'];?></a> - 
                             <?=$row['mu_eater'];?>
                         </td>
+                    </tr>
+                    <tr>
+                        <td class="tdgap"></td>
                     </tr>
                     <?
                     }
