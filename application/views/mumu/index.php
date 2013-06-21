@@ -1,6 +1,8 @@
     <style>
     input { width:240px; }
+    .container { width:480px; }
     .btn { height:80px; }
+    .table { width:480px; }
     .table tr { border:0px solid #000; }
     .table th { text-align:center; }
     .table td { vertical-align:middle;padding:10px 22px 10px 20px;border-top:0px;border:0px solid #000; }
@@ -27,30 +29,18 @@
                 },
             });
         }
-        function view_comment(srl) {
-            var op = $('#toggle').val();
-            if(op == '1') {
-                $('#toggle').val('2');
-                viewreply(srl);
-            } else {
-                $('#toggle').val('1');
-                closereply();
-            }
-        }
-        function viewreply(srl) {
-            $.get('mumu/viewhtml', function(data) {
-                $('#'+srl).after(data);
-            });
-        }
-        function closereply() {
-            $('#view').hide();
-        }
     </script>
-    <input type="hidden" id="toggle" name="toggle" value="1">
     <table class="table">
         <tr>
             <td class="comment">
-                <table style="width:564px;">
+                <form class="form-horizontal" method="post" id="frm_comment" onSubmit="return false;">
+                <input type="hidden" name="eater" value="prog106">
+                <div class="input-append">
+                    <input type="text" id="comment" name="comment" placeholder="Hungry!" style="width:350px;height:70px;">
+                    <button type="button" id="frm_comment_btn" class="btn">Go Eat!</button>
+                </div>
+                </form>
+                <table style="width:430px;">
                     <thead>
                     <? 
                     $nowdate = date('Y-m-d');
@@ -68,7 +58,7 @@
                     <tr class="tdgap" id="<?=$row['mu_id'];?>">
                         <td>
                             [<?=substr($row['mu_create_date'],11,8);?>]
-                            <a href="javascript:view_comment(<?=$row['mu_id'];?>)"><?=$row['mu_comment'];?></a> - 
+                            <?=$row['mu_comment'];?> - 
                             <?=$row['mu_eater'];?>
                         </td>
                     </tr>
@@ -76,16 +66,6 @@
                     }
                     ?>
                 </table>
-            </td>
-            <td class="comment">
-                <form class="form-horizontal" method="post" id="frm_comment" onSubmit="return false;">
-                <input type="hidden" name="eater" value="prog106">
-                <div class="input-append">
-                    <input type="text" id="comment" name="comment" placeholder="Hungry!" style="height:70px;">
-                    <button type="button" id="frm_comment_btn" class="btn">Go Eat!</button>
-                </div>
-                </form>
-                <div style="width:300px;height:300px;" id="view_comment"></div>
             </td>
         </tr>
     </table>

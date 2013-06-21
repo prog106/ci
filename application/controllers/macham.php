@@ -1,5 +1,5 @@
 <?php
-class Mumu extends CI_Controller {
+class Macham extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('adinfo', 'adinfo');
@@ -7,19 +7,12 @@ class Mumu extends CI_Controller {
         $this->load->helper('url');
     }
     function index() {
-        $common['title'] = "MuMug";
-        $this->load->view('_head', $common);
+        $common['title'] = "Macham";
+        $this->load->view('macham/_head', $common);
 
-        $nowdate = date('Y-m-d');
-        $where = " mu_create_date LIKE '".$nowdate."%' AND mu_viewyn = 'y'";
-        $order = " mu_yes DESC, mu_no ASC, mu_id DESC";
-        $limit['start'] = "0";
-        $limit['cnt'] = "30";
-        $param = array();
-        $data['lists'] = $this->mumug->mu_list($where, $order, $limit, $param);
-        $this->load->view('mumu/index', $data);
+        $this->load->view('macham/main');
 
-        $this->load->view('_footer', $common);
+        $this->load->view('macham/_footer', $common);
     }
     function commentinsert() {
         $input_array = array('comment', 'eater');
