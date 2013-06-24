@@ -7,10 +7,12 @@ class Macham extends CI_Controller {
         $this->load->helper('url');
     }
     function index() {
+        $this->load->helper('common');
+        $data['calendar'] = calendar('2013', '7', '2');
         $common['title'] = "Macham";
         $this->load->view('macham/_head', $common);
 
-        $this->load->view('macham/main');
+        $this->load->view('macham/main', $data);
 
         $this->load->view('macham/_footer', $common);
     }
