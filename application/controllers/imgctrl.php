@@ -6,6 +6,25 @@ class Imgctrl extends CI_Controller {
     function index() {
         $this->imageinsert();
     }
+    function imagemacham() {
+        $time = time();
+        $savefolder = "/home/prog106/ci/static/upload/";
+        $checktoken = md5('prog106'.$this->input->post('timestamp'));
+        if(!empty($_FILES) && $this->input->post('token') == $checktoken) {
+            $tmpfile = $_FILES['photo']['tmp_name'][0];
+            $fileTypes = array('jpg', 'gif', 'png');
+            $fileParts = pathinfo($_FILES['photo']['name'][0]);
+            $savefilename = md5('img'.$time).".".$fileParts['extension'];
+
+            if(in_array($fileParts['extension'], $fileTypes)) {
+                move_uploaded_file($tmpfile, '/home/prog106/ci/static/upload/'.$savefilename);
+                $result['returnname'] = $savefilename;
+                echo json_encode($result);
+            } else {
+                echo "Check File Type, Please";
+            }
+        }
+    }
     function imageinsert() {
         $time = time();
         $savefolder = "/home/prog106/ci/static/upload/";
