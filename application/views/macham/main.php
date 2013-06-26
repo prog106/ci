@@ -16,11 +16,18 @@ li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 5px 10px
 .info .timer { float:right;padding-right:3px; }
 .comment { font-size:12pt;padding:5px 0 5px 0; }
 .btn { margin-top:5px; }
+.cal { height:200px; }
 .calendar td { border:0px solid #000;width:30px;text-align:center; }
 .calendar .month { font-size:12pt;font-weight:bold; }
+.calendar .month .prev { cursor:pointer; }
+.calendar .month .next { cursor:pointer; }
 .calendar .week { font-size:7pt; }
+.calendar .sun { color:#C00; }
+.calendar .sat { color:#00C; }
 .calendar .day { font-size:10pt; }
-.calendar .today { font-weight:bold; }
+.calendar #today { background-color:#CCC; }
+.calendar #before { font-size:7pt;background-color:#EEF; }
+.calendar #after { font-size:7pt;background-color:#EEF; }
 </style>
 <div class="wrap">
     <h3 class="logo">Ma Cham</h3>
@@ -91,8 +98,15 @@ li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 5px 10px
                     <option>ALL</option>
                 </select>
             </li>
-            <li><?=$calendar;?>
+            <li class="cal"><?=$calendar;?>
             </li>
         </ul>
     </div>
 </div>
+<script>
+function move(cal) {
+    $('.calendar').load('/macham/calendars', { 'month' : $('.'+cal).attr('id') });
+}
+$(function() {
+});
+</script>

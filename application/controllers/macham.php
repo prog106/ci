@@ -8,7 +8,7 @@ class Macham extends CI_Controller {
     }
     function index() {
         $this->load->helper('common');
-        $data['calendar'] = calendar('2013', '7', '2');
+        $data['calendar'] = calendar();
         $common['title'] = "Macham";
         $this->load->view('macham/_head', $common);
 
@@ -51,6 +51,11 @@ class Macham extends CI_Controller {
         $this->load->view('mumu/content', $data);
 
         $this->load->view('_footer', $common);
+    }
+    function calendars() {
+        $month = $this->input->post('month');
+        $this->load->helper('common');
+        echo calendar($month);
     }
 }
 ?>
