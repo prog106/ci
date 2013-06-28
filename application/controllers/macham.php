@@ -8,6 +8,8 @@ class Macham extends CI_Controller {
     }
     function index() {
         $this->load->helper('common');
+
+        $data['comments'] = $this->mumug->mu_list('', 'mu_id desc', array('start' => 0, 'cnt' => 10000));
         $data['calendar'] = calendar();
         $common['title'] = "Macham";
         $this->load->view('macham/_head', $common);
@@ -17,7 +19,7 @@ class Macham extends CI_Controller {
         $this->load->view('macham/_footer', $common);
     }
     function commentinsert() {
-        $input_array = array('comment', 'eater');
+        $input_array = array('comment', 'eater', 'imagesrc');
         foreach($input_array as $k) {
             $param['mu_'.$k] = $this->input->post($k);
         }
@@ -27,9 +29,6 @@ class Macham extends CI_Controller {
         $result = $this->mumug->mu_insert($param);
         $msg = ($result)? "Comment Success!" : "Comment False! Retry!";
         echo json_encode($msg);
-    }
-    function viewhtml() {
-        echo "<table id='view'><tr><td>Hey Here</td><tr></table>";
     }
     function viewcomment() {
         $common['title'] = "MaCham";

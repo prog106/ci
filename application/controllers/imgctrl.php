@@ -25,6 +25,12 @@ class Imgctrl extends CI_Controller {
             }
         }
     }
+    function imagemachamdrop() {
+        $imgsrc = $this->input->post('imgsrc');
+        $savefolder = "/home/prog106/ci/static/upload/";
+        if(file_exists($savefolder.$imgsrc)) unlink($savefolder.$imgsrc);
+        return true;
+    }
     function imageinsert() {
         $time = time();
         $savefolder = "/home/prog106/ci/static/upload/";

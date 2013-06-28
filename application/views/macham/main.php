@@ -1,7 +1,7 @@
 <style type="text/css">
 body { background-color:#EEE; }
 ul { margin:0;padding:0; }
-li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 5px 10px; }
+li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 15px 10px; }
 .wrap { clear:both;background-color:#C00;width:900px;min-height:100%;margin:22px auto 0px;padding:20px 20px 0 20px;border:1px solid #000; }
 .wrapper { position:relative;overflow:hidden; }
 .logo { color:white; }
@@ -29,20 +29,24 @@ li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 5px 10px
 .calendar #before { font-size:7pt;background-color:#EEF; }
 .calendar #after { font-size:7pt;background-color:#EEF; }
 
+.reviewimage { width:200px;margin:5px 0 0 0;padding:5px; }
+.reviewimage .on { width:200px;margin:5px 0 0 0;padding:5px;border:1px solid #000; }
+
+.img { text-align:center;margin:5px auto 0; padding:5px;border:1px solid #CCC;display:none; }
+.imagesrc { margin:5px auto 0; padding:5px;border:0px solid #CCC; }
+#imgremove { cursor:pointer; }
 </style>
 <script type="text/javascript">
     function frm_comment_submit() {
         var frm = $('#frm_comment').serialize();
-        console.log(frm);
-        exit;
         $.ajax({
-            url : '/adform/adinsert',
+            url : '/macham/commentinsert',
             type : 'POST',
             data : frm,
             datatype : 'json',
             success : function(data) {
                 alert(data);
-                location.href='/adform';
+                location.href='/macham';
             },
             error : function(x,e) {
                 alert(x.status);
@@ -56,10 +60,43 @@ li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 5px 10px
     <h3 class="logo">Ma Cham</h3>
     <div class="wrapper">
         <ul class="left">
+            <?
+            foreach($comments as $row) {
+            $ctp = explode(" ", $row['mu_create_date']);
+            $ct = explode("-", $ctp[0]);
+            $cp = explode(":", $ctp[1]);
+            $time = time();
+            $commenttime = mktime($cp[0], $cp[1], $cp[2], $ct[1], $ct[2], $ct[0]);
+            $gap = $time - $commenttime; // now - reg 3100
+
+            $dgap = (int)($gap/(24*60*60)); // hour -> day
+            if($dgap > 0) $gap = $gap - ($dgap*24*60*60);
+
+            $mgap = (int)($gap/(60*60)); // min -> hour
+            if($mgap > 0) $gap = $gap - ($mgap*60*60);
+
+            $hgap = (int)(($gap)/60); // sec -> min
+            if($hgap > 0) $gap = $gap - ($hgap*60);
+
+            $timer = ($dgap < 1)? '': $dgap."D ";
+            $timer .= ($mgap < 1)? '': $mgap."H ";
+            $timer .= ($hgap < 1)? '': $hgap."M ";
+            $timer .= " ago";
+
+            $imgview = ($row['mu_imagesrc'])? '<div class="imagesrc"><img src="/static/upload/'.$row['mu_imagesrc'].'"></div>' : '';
+            ?>
             <li>
-                <div class="info"><span class="writer">nick-name</span> <span class="company">compamy</span> <span class="timer">time</span></div>
-                <div class="comment">contents HERE!! <br>very nice?!!!</div>
+                <div class="info">
+                    <span class="writer"><?=$row['mu_eater'];?></span>
+                    <span class="company">compamy</span>
+                    <span class="timer"><?=$timer;?></span>
+                </div>
+                <div class="comment"><?=$row['mu_comment'];?></div>
+                <?=$imgview;?>
             </li>
+            <?
+            }
+            ?>
             <li>
                 <div class="info"><span class="writer">nick-name</span> <span class="company">compamy</span> <span class="timer">time</span></div>
                 <div class="comment">contents HERE!! <br>very nice?!!!</div>
@@ -107,7 +144,10 @@ li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 5px 10px
         </ul>
         <ul class="right">
             <li>
-                <form class="form-horizontal" method="post" id="frm_comment" onSubmit="return false;">
+                <div id="countdown"></div>
+            </li>
+            <form class="form-horizontal" method="post" id="frm_comment" onSubmit="return false;">
+            <li>
                 <input type="hidden" name="eater" value="prog106">
                 <textarea rows="5" name="comment" id="comment" placeholder="Hungry!" style="width:315px;"></textarea>
                 <span class="btn btn-warning fileinput-button">
@@ -115,22 +155,20 @@ li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 5px 10px
                     <input id="fileupload" type="file" name="photo[]" multiple>
                     <input type="hidden" name="timestamp" value="<?=$time;?>">
                     <input type="hidden" name="token" value="<?=md5('prog106'.$time);?>">
+                    <input type="hidden" name="imagesrc" id="imagesrc" value="">
                 </span>
                 <button type="button" id="frm_comment_btn" class="btn btn-info">Go Eat!</button>
-                <div id="progress" class="progress progress-success progress-striped">
-                    <div class="bar"></div>
-                </div>
-                <div id="files" class="files"></div>
-                </form>
+                <div class="img"><img id="img" /><i class="icon-remove-circle" id="imgremove"></i></div>
             </li>
-            <li>
+            </form>
+            <!-- li>
                 user info / company / I'm write ...
             </li>
             <li>
                 <select name="company">
                     <option>ALL</option>
                 </select>
-            </li>
+            </li -->
             <li class="cal"><?=$calendar;?>
             </li>
         </ul>
@@ -142,27 +180,42 @@ function move(cal) {
 }
 $(function () {
     'use strict';
-    // Change this to the location of your server-side upload handler:
-    var url = (window.location.hostname === 'blueimp.github.io' ||
-                window.location.hostname === 'blueimp.github.io') ?
-                '//jquery-file-upload.appspot.com/' : 'server/php/';
     var url = '/imgctrl/imagemacham';
     $('#fileupload').fileupload({
         url: url,
         dataType: 'json',
         done: function (e, data) {
-            $('<input/>').text(data.result.returnname).appendTo('#files');
-        },
-        progressall: function (e, data, XHR) {
-            var progress = parseInt(data.loaded / data.total * 100, 10);
-            $('#progress .bar').css(
-                'width',
-                progress + '%'
-            );
+            $('#img').attr({ src : 'http://localhost/static/upload/' + data.result.returnname });
+            $('.img').show();
+            $('#imagesrc').val(data.result.returnname);
+            $('.fileinput-button').hide();
         }
     });
+    $('#imgremove').click(function() {
+        $.ajax({
+            type : 'post',
+            url : '/imgctrl/imagemachamdrop',
+            data : { imgsrc : $('#imagesrc').val() }
+        }).done(function() {
+            $('#imagesrc').val('');
+            $('.img').hide();
+            $('.fileinput-button').show();
+        });
+    });
     $('#frm_comment_btn').click(function() {
+        if($('#comment').val() == '') {
+            alert('Comment Insert Please!');
+            return false;
+        }
         frm_comment_submit();
+    });
+    var austDay = new Date();
+    austDay = new Date(<?=date('Y');?>, <?=date('n');?> - 1, <?=date('j');?>, 23, 59, 59);
+    $('#countdown').countdown({
+        until: austDay,
+        format:'HMS',
+        compact:true,
+        layout: '{hnn}{sep}{mnn}{sep}{snn} Left Today' + "(<?=date('Y-m-d');?>)"
     });
 });
 </script>

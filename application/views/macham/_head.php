@@ -17,5 +17,6 @@
 <script src="/static/js/jquery.ui.widget.js"></script>
 <script src="/static/js/jquery.iframe-transport.js"></script>
 <script src="/static/js/jquery.fileupload.js"></script>
+<script src="/static/js/jquery.countdown.js"></script>
 </head>
 <body>
