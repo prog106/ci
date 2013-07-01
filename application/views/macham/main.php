@@ -78,10 +78,16 @@ li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 15px 10p
             $hgap = (int)(($gap)/60); // sec -> min
             if($hgap > 0) $gap = $gap - ($hgap*60);
 
-            $timer = ($dgap < 1)? '': $dgap."D ";
-            $timer .= ($mgap < 1)? '': $mgap."H ";
-            $timer .= ($hgap < 1)? '': $hgap."M ";
-            $timer .= " ago";
+            if($dgap > 1) {
+                $timer = $dgap."D ";
+                $timer .= " ago";
+            } else if($dgap == 1) {
+                $timer = "Yesterday";
+            } else {
+                $timer = ($mgap < 1)? '': $mgap."H ";
+                $timer .= ($hgap < 1)? '': $hgap."M ";
+                $timer .= " ago";
+            }
 
             $imgview = ($row['mu_imagesrc'])? '<div class="imagesrc"><img src="/static/upload/'.$row['mu_imagesrc'].'"></div>' : '';
             ?>
@@ -137,9 +143,7 @@ li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 15px 10p
                 <div class="info"><span class="writer">nick-name</span> <span class="company">compamy</span> <span class="timer">time</span></div>
                 <div class="comment">contents HERE!!</div>
             </li>
-            <li>
-                <div class="info"><span class="writer">nick-name</span> <span class="company">compamy</span> <span class="timer">time</span></div>
-                <div class="comment">contents HERE!!</div>
+            <li id="moreview"><button class="btn btn-inverse" id="more">more view...</button>
             </li>
         </ul>
         <ul class="right">
@@ -150,6 +154,7 @@ li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 15px 10p
             <li>
                 <input type="hidden" name="eater" value="prog106">
                 <textarea rows="5" name="comment" id="comment" placeholder="Hungry!" style="width:315px;"></textarea>
+                <button type="button" id="frm_comment_btn" class="btn btn-info">Go Eat!</button>
                 <span class="btn btn-warning fileinput-button">
                     <i class="icon-camera icon-white"></i>
                     <input id="fileupload" type="file" name="photo[]" multiple>
@@ -157,8 +162,7 @@ li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 15px 10p
                     <input type="hidden" name="token" value="<?=md5('prog106'.$time);?>">
                     <input type="hidden" name="imagesrc" id="imagesrc" value="">
                 </span>
-                <button type="button" id="frm_comment_btn" class="btn btn-info">Go Eat!</button>
-                <div class="img"><img id="img" /><i class="icon-remove-circle" id="imgremove"></i></div>
+                <div class="img"><img id="img" /><button class="btn btn-success" id="imgremove">Image Delete</button></div>
             </li>
             </form>
             <!-- li>
@@ -200,6 +204,13 @@ $(function () {
             $('#imagesrc').val('');
             $('.img').hide();
             $('.fileinput-button').show();
+        });
+    });
+    $('#more').click(function() {
+        $.ajax({
+            url : '/macham/viewmore'
+        }).success(function(data) {
+            $('#moreview').before(data);
         });
     });
     $('#frm_comment_btn').click(function() {
