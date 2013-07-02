@@ -4,7 +4,7 @@ ul { margin:0;padding:0; }
 li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 15px 10px; }
 .wrap { clear:both;background-color:#C00;width:900px;min-height:100%;margin:22px auto 0px;padding:20px 20px 0 20px;border:1px solid #000; }
 .wrapper { position:relative;overflow:hidden; }
-.logo { color:white; }
+.logo { color:white;border:1px solid #000; }
 .left { float:left;border:1px solid #000;background-color:white;width:540px; }
 .right { float:right;border:1px solid #000;background-color:white;width:340px; }
 .right li { border-bottom:0px solid #CCC; padding:5px; }
@@ -35,6 +35,8 @@ li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 15px 10p
 .img { text-align:center;margin:5px auto 0; padding:5px;border:1px solid #CCC;display:none; }
 .imagesrc { margin:5px auto 0; padding:5px;border:0px solid #CCC; }
 #imgremove { cursor:pointer; }
+.movelayer { width:900px;position:fixed; }
+.movetop { float:right; }
 </style>
 <script type="text/javascript">
     function frm_comment_submit() {
@@ -59,6 +61,7 @@ li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 15px 10p
 <div class="wrap">
     <h3 class="logo">Ma Cham</h3>
     <div class="wrapper">
+        <div class="movelayer"><span class="movetop">top</span></div>
         <ul class="left">
             <?
             foreach($comments as $row) {
@@ -143,7 +146,9 @@ li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 15px 10p
                 <div class="info"><span class="writer">nick-name</span> <span class="company">compamy</span> <span class="timer">time</span></div>
                 <div class="comment">contents HERE!!</div>
             </li>
-            <li id="moreview"><button class="btn btn-inverse" id="more">more view...</button>
+            <li id="moreview">
+                <button class="btn btn-inverse" id="more">more view...</button>
+                <input type="hidden" name="moreno" id="moreno" value="1">
             </li>
         </ul>
         <ul class="right">
@@ -208,9 +213,14 @@ $(function () {
     });
     $('#more').click(function() {
         $.ajax({
-            url : '/macham/viewmore'
+            type : 'post',
+            url : '/macham/viewmore',
+            data : { moreno : $('#moreno').val() }
         }).success(function(data) {
+            var no = $('#moreno').val();
             $('#moreview').before(data);
+            no++;
+            $('#moreno').val(no);
         });
     });
     $('#frm_comment_btn').click(function() {

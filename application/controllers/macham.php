@@ -52,7 +52,8 @@ class Macham extends CI_Controller {
         $this->load->view('_footer', $common);
     }
     function viewmore() {
-        $this->load->view('macham/more');
+        $data['page'] = $this->input->post('moreno');
+        $this->load->view('macham/more', $data);
     }
     function calendars() {
         $month = $this->input->post('month');
