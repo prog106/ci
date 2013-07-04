@@ -120,7 +120,7 @@ li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 15px 10p
             <form class="form-horizontal" method="post" id="frm_comment" onSubmit="return false;">
             <li>
                 <input type="hidden" name="eater" value="prog106">
-                <textarea rows="5" name="comment" id="comment" placeholder="Hungry!" style="width:315px;"></textarea>
+                <textarea rows="5" name="comment" id="comment" placeholder="Hungry!" style="width:315px;resize:none;"></textarea>
                 <button type="button" id="frm_comment_btn" class="btn btn-info">Go Eat!</button>
                 <span class="btn btn-warning fileinput-button">
                     <i class="icon-camera icon-white"></i>
