@@ -9,7 +9,7 @@ class Macham extends CI_Controller {
     function index() {
         $this->load->helper('common');
 
-        $data['comments'] = $this->mumug->mu_list('', 'mu_id desc', array('start' => 0, 'cnt' => 10000));
+        $data['comments'] = $this->mumug->mu_list('', 'mu_id desc', array('start' => 0, 'cnt' => 10));
         $data['calendar'] = calendar();
         $common['title'] = "Macham";
         $this->load->view('macham/_head', $common);
@@ -52,7 +52,10 @@ class Macham extends CI_Controller {
         $this->load->view('_footer', $common);
     }
     function viewmore() {
-        $data['page'] = $this->input->post('moreno');
+        $page = $this->input->post('moreno');
+        if(empty($page)) die;
+        $start = $page * 10;
+        $data['comments'] = $this->mumug->mu_list('', 'mu_id desc', array('start' => $start, 'cnt' => 10));
         $this->load->view('macham/more', $data);
     }
     function calendars() {

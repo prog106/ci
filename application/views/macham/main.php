@@ -4,7 +4,7 @@ ul { margin:0;padding:0; }
 li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 15px 10px; }
 .wrap { clear:both;background-color:#C00;width:900px;min-height:100%;margin:22px auto 0px;padding:20px 20px 0 20px;border:1px solid #000; }
 .wrapper { position:relative;overflow:hidden; }
-.logo { color:white;border:1px solid #000; }
+.logo { color:white;border:0px solid #000; }
 .left { float:left;border:1px solid #000;background-color:white;width:540px; }
 .right { float:right;border:1px solid #000;background-color:white;width:340px; }
 .right li { border-bottom:0px solid #CCC; padding:5px; }
@@ -34,9 +34,8 @@ li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 15px 10p
 
 .img { text-align:center;margin:5px auto 0; padding:5px;border:1px solid #CCC;display:none; }
 .imagesrc { margin:5px auto 0; padding:5px;border:0px solid #CCC; }
-#imgremove { cursor:pointer; }
-.movelayer { width:900px;position:fixed; }
-.movetop { float:right; }
+.move { width:900px;height:20px;position:fixed;bottom:20px;display:none;padding-left:70px }
+.move .top { float:right;font-weight:bold;color:#000;cursor:pointer; }
 </style>
 <script type="text/javascript">
     function frm_comment_submit() {
@@ -56,12 +55,15 @@ li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 15px 10p
             },
         });
     }
+    function move(cal) {
+        $('.calendar').load('/macham/calendars', { 'month' : $('.'+cal).attr('id') });
+    }
 </script>
 <? $time = time(); ?>
 <div class="wrap">
+    <div class="move"><span class="top"><i class="icon-arrow-up"></i>Top</span></div>
     <h3 class="logo">Ma Cham</h3>
     <div class="wrapper">
-        <div class="movelayer"><span class="movetop">top</span></div>
         <ul class="left">
             <?
             foreach($comments as $row) {
@@ -88,7 +90,7 @@ li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 15px 10p
                 $timer = "Yesterday";
             } else {
                 $timer = ($mgap < 1)? '': $mgap."H ";
-                $timer .= ($hgap < 1)? '': $hgap."M ";
+                $timer .= $hgap."M ";
                 $timer .= " ago";
             }
 
@@ -106,46 +108,6 @@ li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 15px 10p
             <?
             }
             ?>
-            <li>
-                <div class="info"><span class="writer">nick-name</span> <span class="company">compamy</span> <span class="timer">time</span></div>
-                <div class="comment">contents HERE!! <br>very nice?!!!</div>
-            </li>
-            <li>
-                <div class="info"><span class="writer">nick-name</span> <span class="company">compamy</span> <span class="timer">time</span></div>
-                <div class="comment">contents HERE!! <br>very nice?!!!</div>
-            </li>
-            <li>
-                <div class="info"><span class="writer">nick-name</span> <span class="company">compamy</span> <span class="timer">time</span></div>
-                <div class="comment">contents HERE!! <br>very nice?!!!</div>
-            </li>
-            <li>
-                <div class="info"><span class="writer">nick-name</span> <span class="company">compamy</span> <span class="timer">time</span></div>
-                <div class="comment">contents HERE!!</div>
-            </li>
-            <li>
-                <div class="info"><span class="writer">nick-name</span> <span class="company">compamy</span> <span class="timer">time</span></div>
-                <div class="comment">contents HERE!!</div>
-            </li>
-            <li>
-                <div class="info"><span class="writer">nick-name</span> <span class="company">compamy</span> <span class="timer">time</span></div>
-                <div class="comment">contents HERE!!</div>
-            </li>
-            <li>
-                <div class="info"><span class="writer">nick-name</span> <span class="company">compamy</span> <span class="timer">time</span></div>
-                <div class="comment">contents HERE!!</div>
-            </li>
-            <li>
-                <div class="info"><span class="writer">nick-name</span> <span class="company">compamy</span> <span class="timer">time</span></div>
-                <div class="comment">contents HERE!!</div>
-            </li>
-            <li>
-                <div class="info"><span class="writer">nick-name</span> <span class="company">compamy</span> <span class="timer">time</span></div>
-                <div class="comment">contents HERE!!</div>
-            </li>
-            <li>
-                <div class="info"><span class="writer">nick-name</span> <span class="company">compamy</span> <span class="timer">time</span></div>
-                <div class="comment">contents HERE!!</div>
-            </li>
             <li id="moreview">
                 <button class="btn btn-inverse" id="more">more view...</button>
                 <input type="hidden" name="moreno" id="moreno" value="1">
@@ -184,9 +146,6 @@ li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 15px 10p
     </div>
 </div>
 <script>
-function move(cal) {
-    $('.calendar').load('/macham/calendars', { 'month' : $('.'+cal).attr('id') });
-}
 $(function () {
     'use strict';
     var url = '/imgctrl/imagemacham';
@@ -199,6 +158,17 @@ $(function () {
             $('#imagesrc').val(data.result.returnname);
             $('.fileinput-button').hide();
         }
+    });
+    $(window).scroll(function() {
+        if($(this).scrollTop() > 200) {
+            $('.move').fadeIn();
+        } else {
+            $('.move').fadeOut();
+        }
+    });
+    $('.top').click(function() {
+        $('html body').animate({ scrollTop : 0}, 100);
+        return false;
     });
     $('#imgremove').click(function() {
         $.ajax({
@@ -237,6 +207,10 @@ $(function () {
         format:'HMS',
         compact:true,
         layout: '{hnn}{sep}{mnn}{sep}{snn} Left Today' + "(<?=date('Y-m-d');?>)"
+    });
+    $('#comment').focus();
+    $('textarea').keypress(function(e) {
+        if(e.keyCode == 13) return false;
     });
 });
 </script>
