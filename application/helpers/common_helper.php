@@ -1,4 +1,10 @@
 <?
+function txtlimit($txt, $limit=55) {
+    if(mb_strlen($txt, 'UTF-8') > $limit) {
+        $txt = mb_substr($txt, 0, $limit, 'UTF-8').'...';
+    }
+    return $txt;
+}
 function calendar($month='') {
     if(empty($month)) {
         $cal = array(

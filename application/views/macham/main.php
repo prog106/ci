@@ -14,7 +14,7 @@ li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 15px 10p
 .info .writer { font-weight:bold;font-size:12pt; }
 .info .company { font-size:10pt; }
 .info .timer { float:right;padding-right:3px; }
-.comment { font-size:12pt;padding:5px 0 5px 0; }
+.comment { font-size:12pt;padding:5px 0 5px 0;cursor:pointer; }
 .btn { margin-top:5px; }
 .cal { height:200px; }
 .calendar td { border:0px solid #000;width:30px;text-align:center; }
@@ -93,8 +93,6 @@ li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 15px 10p
                 $timer .= $hgap."M ";
                 $timer .= " ago";
             }
-
-            $imgview = ($row['mu_imagesrc'])? '<div class="imagesrc"><img src="/static/upload/'.$row['mu_imagesrc'].'"></div>' : '';
             ?>
             <li>
                 <div class="info">
@@ -102,8 +100,7 @@ li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 15px 10p
                     <span class="company">compamy</span>
                     <span class="timer"><?=$timer;?></span>
                 </div>
-                <div class="comment"><?=$row['mu_comment'];?></div>
-                <?=$imgview;?>
+                <div class="comment" id="<?=$row['mu_id'];?>"><?=($row['mu_title'])? txtlimit($row['mu_title']) : txtlimit($row['mu_comment']);?></div>
             </li>
             <?
             }
@@ -120,8 +117,10 @@ li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 15px 10p
             <form class="form-horizontal" method="post" id="frm_comment" onSubmit="return false;">
             <li>
                 <input type="hidden" name="eater" value="prog106">
-                <textarea rows="5" name="comment" id="comment" placeholder="Hungry!" style="width:315px;resize:none;"></textarea>
-                <button type="button" id="frm_comment_btn" class="btn btn-info">Go Eat!</button>
+                <input type="hidden" name="tps" id="tps" value="s">
+                <input type="text" name="title" id="title" placeholder="Title Please" style="width:315px;margin:3px 0 5px 0;display:none;">
+                <textarea name="comment" id="comment" placeholder="Comment Please" style="width:315px;height:100px;resize:none;"></textarea>
+                <button type="button" id="frm_comment_btn" class="btn btn-info">Go!</button>
                 <span class="btn btn-warning fileinput-button">
                     <i class="icon-camera icon-white"></i>
                     <input id="fileupload" type="file" name="photo[]" multiple>
@@ -129,6 +128,7 @@ li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 15px 10p
                     <input type="hidden" name="token" value="<?=md5('prog106'.$time);?>">
                     <input type="hidden" name="imagesrc" id="imagesrc" value="">
                 </span>
+                <button type="button" id="write" class="btn btn-danger">Long Write!</button>
                 <div class="img"><img id="img" /><button class="btn btn-success" id="imgremove">Image Delete</button></div>
             </li>
             </form>
@@ -159,8 +159,34 @@ $(function () {
             $('.fileinput-button').hide();
         }
     });
+    $('.comment').click(function(data) {
+        $.ajax({
+            type : 'post',
+            url : '/macham/viewcomment',
+            data : { srl : data.target.id }
+        }).success(function(data) {
+            $(this).before(data);
+        });
+    });
+    $('#write').click(function() {
+        $('#title').toggle('slow', function () {
+            if($('#write').text() == 'Long Write!') {
+                $('#write').text('Short Write!');
+                $('#comment').css({ height:'250px', });
+                $(this).focus();
+                $('#tps').val('l');
+            } else {
+                if($('#title').val() != '') {
+                    alert('Title is not insert!');
+                }
+                $('#write').text('Long Write!');
+                $('#comment').css({ height:'100px', }).focus();
+                $('#tps').val('s');
+            }
+        });
+    });
     $(window).scroll(function() {
-        if($(this).scrollTop() > 200) {
+        if($(this).scrollTop() > 10) {
             $('.move').fadeIn();
         } else {
             $('.move').fadeOut();
@@ -194,8 +220,17 @@ $(function () {
         });
     });
     $('#frm_comment_btn').click(function() {
+        if($('#title').val() == '' && $('#tps').val() == 'l') {
+            alert('Title Insert Please!');
+            $('#title').focus();
+            return false;
+        }
+        if($('#tps').val() == 's') {
+            $('#title').val('');
+        }
         if($('#comment').val() == '') {
             alert('Comment Insert Please!');
+            $('#comment').focus();
             return false;
         }
         frm_comment_submit();

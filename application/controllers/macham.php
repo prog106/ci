@@ -19,7 +19,7 @@ class Macham extends CI_Controller {
         $this->load->view('macham/_footer', $common);
     }
     function commentinsert() {
-        $input_array = array('comment', 'eater', 'imagesrc');
+        $input_array = array('title', 'comment', 'eater', 'imagesrc');
         foreach($input_array as $k) {
             $param['mu_'.$k] = $this->input->post($k);
         }
@@ -31,25 +31,12 @@ class Macham extends CI_Controller {
         echo json_encode($msg);
     }
     function viewcomment() {
-        $common['title'] = "MaCham";
-        $this->load->view('_head', $common);
-
-        $where = " mu_id = ? AND re_viewyn = 'y'";
-        $order = " re_yes DESC, re_no ASC, re_id DESC";
+        $where = " mu_id = ? AND mu_viewyn = 'y'";
         $param[] = $this->input->post('srl');
-        $limit['start'] = "0";
-        $limit['cnt'] = "30";
-        $data['lists'] = $this->mumug->reply_list($where, $order, $limit, $param);
-        $rewhere = " mu_id = ? AND mu_viewyn = 'y'";
-        $reorder = '';
-        $relimit = '';
-
-        $maincomment = $this->mumug->mu_list($rewhere, $reorder, $relimit, $param);
-        $data['maincomment'] = $maincomment[0];
-        
-        $this->load->view('mumu/content', $data);
-
-        $this->load->view('_footer', $common);
+        if(empty($param)) die;
+        $lists = $this->mumug->mu_comment($where, $param);
+        $data['row'] = $lists[0];
+        $this->load->view('macham/view', $data);
     }
     function viewmore() {
         $page = $this->input->post('moreno');

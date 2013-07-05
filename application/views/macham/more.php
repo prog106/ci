@@ -35,8 +35,7 @@
                     <span class="company">compamy</span>
                     <span class="timer"><?=$timer;?></span>
                 </div>
-                <div class="comment"><?=$row['mu_comment'];?></div>
-                <?=$imgview;?>
+                <div class="comment" id="<?=$row['mu_id'];?>"><?=$row['mu_comment'];?></div>
             </li>
             <?
             }
