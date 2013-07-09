@@ -7,14 +7,19 @@ li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 15px 10p
 .logo { color:white;border:0px solid #000; }
 .left { float:left;border:1px solid #000;background-color:white;width:540px; }
 .right { float:right;border:1px solid #000;background-color:white;width:340px; }
-.right li { border-bottom:0px solid #CCC; padding:5px; }
+.right li { border-bottom:0px solid #CCC; padding:2px; }
 .right li table { margin:auto; }
 
 .info { background-color:#EEE; }
 .info .writer { font-weight:bold;font-size:12pt; }
 .info .company { font-size:10pt; }
 .info .timer { float:right;padding-right:3px; }
+.info1 { cursor:pointer; }
+.info1 .title { font-size:11pt; }
+.info1 .no { font-size:10pt;font-weight:bold; }
+.info1 .timer { font-size:9pt;float:right;padding-right:3px; }
 .comment { font-size:12pt;padding:5px 0 5px 0;cursor:pointer; }
+.fullcomment { font-size:12pt;padding:5px 0 5px 0; }
 .btn { margin-top:5px; }
 .cal { height:200px; }
 .calendar td { border:0px solid #000;width:30px;text-align:center; }
@@ -36,6 +41,7 @@ li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 15px 10p
 .imagesrc { margin:5px auto 0; padding:5px;border:0px solid #CCC; }
 .move { width:900px;height:20px;position:fixed;bottom:20px;display:none;padding-left:70px }
 .move .top { float:right;font-weight:bold;color:#000;cursor:pointer; }
+.remove { position:absolute;left:520px;cursor:pointer;padding-top:5px; }
 </style>
 <script type="text/javascript">
     function frm_comment_submit() {
@@ -84,24 +90,35 @@ li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 15px 10p
             if($hgap > 0) $gap = $gap - ($hgap*60);
 
             if($dgap > 1) {
-                $timer = $dgap."D ";
+                $timer = $dgap."day ";
                 $timer .= " ago";
             } else if($dgap == 1) {
                 $timer = "Yesterday";
             } else {
-                $timer = ($mgap < 1)? '': $mgap."H ";
-                $timer .= $hgap."M ";
+                $timer = ($mgap < 1)? '': $mgap."h ";
+                $timer .= $hgap."m ";
                 $timer .= " ago";
             }
             ?>
+            <li id="li<?=$row['mu_id'];?>">
+                <div class="info1" id="<?=$row['mu_id'];?>">
+                    <span class="title"><?=($row['mu_title'])? txtlimit($row['mu_title']) : txtlimit($row['mu_comment']);?></span>
+                    <span class="timer"><?=$timer;?></span>
+                </div>
+            </li>
+<?
+/*
             <li>
                 <div class="info">
                     <span class="writer"><?=$row['mu_eater'];?></span>
                     <span class="company">compamy</span>
                     <span class="timer"><?=$timer;?></span>
                 </div>
+                <div class="remove" id="remove<?=$row['mu_id'];?>" style="display:none;"><i class="icon-remove"></i></div>
                 <div class="comment" id="<?=$row['mu_id'];?>"><?=($row['mu_title'])? txtlimit($row['mu_title']) : txtlimit($row['mu_comment']);?></div>
             </li>
+*/
+?>
             <?
             }
             ?>
@@ -153,19 +170,21 @@ $(function () {
         url: url,
         dataType: 'json',
         done: function (e, data) {
-            $('#img').attr({ src : 'http://localhost/static/upload/' + data.result.returnname });
+            $('#img').attr({ src : 'http://localhost/static/uploadready/' + data.result.returnname });
             $('.img').show();
             $('#imagesrc').val(data.result.returnname);
             $('.fileinput-button').hide();
         }
     });
-    $('.comment').click(function(data) {
+    $('.info1').click(function() {
+        var idx = this.id
         $.ajax({
             type : 'post',
             url : '/macham/viewcomment',
-            data : { srl : data.target.id }
-        }).success(function(data) {
-            $(this).before(data);
+            data : { srl : idx }
+        }).success(function(result) {
+            $('#view').remove();
+            $('#li'+idx).after(result);
         });
     });
     $('#write').click(function() {

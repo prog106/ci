@@ -17,7 +17,7 @@ class Imgctrl extends CI_Controller {
             $savefilename = md5('img'.$time).".".$fileParts['extension'];
 
             if(in_array($fileParts['extension'], $fileTypes)) {
-                move_uploaded_file($tmpfile, '/home/prog106/ci/static/upload/'.$savefilename);
+                move_uploaded_file($tmpfile, '/home/prog106/ci/static/uploadready/'.$savefilename);
                 $result['returnname'] = $savefilename;
                 echo json_encode($result);
             } else {

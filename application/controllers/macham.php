@@ -24,6 +24,20 @@ class Macham extends CI_Controller {
             $param['mu_'.$k] = $this->input->post($k);
         }
 
+        $checktoken = md5('prog106'.$this->input->post('timestamp'));
+        $path = '/home/prog106/ci/static/';
+        if(!empty($param['mu_imagesrc'])) {
+            if($this->input->post('token') == $checktoken) {
+                $or = $path.'uploadready/'.$param['mu_imagesrc'];
+                $mv = $path.'upload/'.$param['mu_imagesrc'];
+                $command = "mv ".$or." ".$mv;
+                shell_exec($command);
+            } else {
+                unlink($path.'uploadready/'.$param['mu_imagesrc']);
+                unset($param['mu_imagesrc']);
+            }
+        }
+
         $param['mu_create_date'] = date('Y-m-d H:i:s');
 
         $result = $this->mumug->mu_insert($param);
@@ -32,8 +46,9 @@ class Macham extends CI_Controller {
     }
     function viewcomment() {
         $where = " mu_id = ? AND mu_viewyn = 'y'";
-        $param[] = $this->input->post('srl');
-        if(empty($param)) die;
+        $srl = $this->input->post('srl');
+        if(empty($srl)) die;
+        $param[] = $srl;
         $lists = $this->mumug->mu_comment($where, $param);
         $data['row'] = $lists[0];
         $this->load->view('macham/view', $data);
