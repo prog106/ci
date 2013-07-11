@@ -1,4 +1,14 @@
 <?
+function page($cnt, $cntperpg, $viewpg) {
+    $html = "<div class=\"pagination\"><ul>";
+    for($i=1;$i<=((int)($cnt/$cntperpg))+1;$i++) {
+        $cl = ($viewpg == $i)? "disabled" : "active";
+        //$html .= "<li class=\"".$cl."\"><a href=\"macham?pgno=".$i."\">".$i."</a></li>";
+        $html .= "<li><a href=\"macham?pgno=".$i."\">".$i."</a></li>";
+    }
+    $html .= "</ul></div>";
+    return $html;
+}
 function txtlimit($txt, $limit=55) {
     if(mb_strlen($txt, 'UTF-8') > $limit) {
         $txt = mb_substr($txt, 0, $limit, 'UTF-8').'...';

@@ -9,8 +9,13 @@ class Macham extends CI_Controller {
     function index() {
         $this->load->helper('common');
 
-        $data['comments'] = $this->mumug->mu_list('', 'mu_id desc', array('start' => 0, 'cnt' => 10));
+        $page = ($this->input->get('pgno'))? : 1;
+        $per = 20;
+        $start = ($page-1) * $per;
+        $data['comments'] = $this->mumug->mu_list(' mu_viewyn="y"', 'mu_id desc', array('start' => $start, 'cnt' => $per));
+        $cnt = $this->mumug->mu_cnt(' mu_viewyn="y"');
         $data['calendar'] = calendar();
+        $data['paging'] = page($cnt, $per, $page);
         $common['title'] = "Macham";
         $this->load->view('macham/_head', $common);
 
@@ -54,6 +59,8 @@ class Macham extends CI_Controller {
         $this->load->view('macham/view', $data);
     }
     function viewmore() {
+        $this->load->helper('common');
+
         $page = $this->input->post('moreno');
         if(empty($page)) die;
         $start = $page * 10;

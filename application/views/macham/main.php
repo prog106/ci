@@ -1,10 +1,10 @@
 <style type="text/css">
 body { background-color:#EEE; }
-ul { margin:0;padding:0; }
-li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 15px 10px; }
+.wrapper ul { margin:0;padding:0; }
+.wrapper li { list-style-type:none;border-bottom:1px solid #CCC; }
 .wrap { clear:both;background-color:#C00;width:900px;min-height:100%;margin:22px auto 0px;padding:20px 20px 0 20px;border:1px solid #000; }
 .wrapper { position:relative;overflow:hidden; }
-.logo { color:white;border:0px solid #000; }
+.logo { color:white;border:0px solid #000;cursor:pointer; }
 .left { float:left;border:1px solid #000;background-color:white;width:540px; }
 .right { float:right;border:1px solid #000;background-color:white;width:340px; }
 .right li { border-bottom:0px solid #CCC; padding:2px; }
@@ -14,12 +14,13 @@ li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 15px 10p
 .info .writer { font-weight:bold;font-size:12pt; }
 .info .company { font-size:10pt; }
 .info .timer { float:right;padding-right:3px; }
-.info1 { cursor:pointer; }
-.info1 .title { font-size:11pt; }
+.info1 { cursor:pointer;margin:3px 3px 3px 15px; }
+.info1 .title { font-size:10pt; }
 .info1 .no { font-size:10pt;font-weight:bold; }
 .info1 .timer { font-size:9pt;float:right;padding-right:3px; }
+#view { background-color:#F4F4F4;border-bottom:1px solid #CCC; }
 .comment { font-size:12pt;padding:5px 0 5px 0;cursor:pointer; }
-.fullcomment { font-size:12pt;padding:5px 0 5px 0; }
+.fullcomment { font-size:10pt;padding:5px 15px 5px 15px; }
 .btn { margin-top:5px; }
 .cal { height:200px; }
 .calendar td { border:0px solid #000;width:30px;text-align:center; }
@@ -42,6 +43,8 @@ li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 15px 10p
 .move { width:900px;height:20px;position:fixed;bottom:20px;display:none;padding-left:70px }
 .move .top { float:right;font-weight:bold;color:#000;cursor:pointer; }
 .remove { position:absolute;left:520px;cursor:pointer;padding-top:5px; }
+
+.pagination { text-align:center; }
 </style>
 <script type="text/javascript">
     function frm_comment_submit() {
@@ -102,7 +105,7 @@ li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 15px 10p
             ?>
             <li id="li<?=$row['mu_id'];?>">
                 <div class="info1" id="<?=$row['mu_id'];?>">
-                    <span class="title"><?=($row['mu_title'])? txtlimit($row['mu_title']) : txtlimit($row['mu_comment']);?></span>
+                    <span class="title"><?=($row['mu_title'])? txtlimit($row['mu_title'], 30) : txtlimit($row['mu_comment'], 30);?></span>
                     <span class="timer"><?=$timer;?></span>
                 </div>
             </li>
@@ -123,8 +126,9 @@ li { list-style-type:none;border-bottom:1px solid #CCC;padding:10px 5px 15px 10p
             }
             ?>
             <li id="moreview">
-                <button class="btn btn-inverse" id="more">more view...</button>
-                <input type="hidden" name="moreno" id="moreno" value="1">
+                <?=$paging;?>
+                <!-- button class="btn btn-inverse" id="more">more view...</button>
+                <input type="hidden" name="moreno" id="moreno" value="1" -->
             </li>
         </ul>
         <ul class="right">
@@ -176,15 +180,22 @@ $(function () {
             $('.fileinput-button').hide();
         }
     });
+    $('.logo').click(function() { location.href='/macham'; });
     $('.info1').click(function() {
-        var idx = this.id
-        $.ajax({
-            type : 'post',
-            url : '/macham/viewcomment',
-            data : { srl : idx }
-        }).success(function(result) {
+        $(this).toggleClass(function() {
             $('#view').remove();
-            $('#li'+idx).after(result);
+            var has = $(this).hasClass('open');
+            if(!has) {
+                var idx = this.id
+                $.ajax({
+                    type : 'post',
+                    url : '/macham/viewcomment',
+                    data : { srl : idx }
+                }).success(function(result) {
+                    $('#li'+idx).after(result);
+                });
+            }
+            return 'open';
         });
     });
     $('#write').click(function() {
@@ -264,7 +275,7 @@ $(function () {
     });
     $('#comment').focus();
     $('textarea').keypress(function(e) {
-        if(e.keyCode == 13) return false;
+//        if(e.keyCode == 13) return false;
     });
 });
 </script>

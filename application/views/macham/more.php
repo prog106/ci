@@ -29,6 +29,14 @@
 
             $imgview = ($row['mu_imagesrc'])? '<div class="imagesrc"><img src="/static/upload/'.$row['mu_imagesrc'].'"></div>' : '';
             ?>
+            <li id="li<?=$row['mu_id'];?>">
+                <div class="info1" id="<?=$row['mu_id'];?>">
+                    <span class="title"><?=($row['mu_title'])? txtlimit($row['mu_title'], 30) : txtlimit($row['mu_comment'], 30);?></span>
+                    <span class="timer"><?=$timer;?></span>
+                </div>
+            </li>
+<?
+/*
             <li>
                 <div class="info">
                     <span class="writer"><?=$row['mu_eater'];?></span>
@@ -37,6 +45,7 @@
                 </div>
                 <div class="comment" id="<?=$row['mu_id'];?>"><?=$row['mu_comment'];?></div>
             </li>
-            <?
+<?
+*/
             }
             ?>
