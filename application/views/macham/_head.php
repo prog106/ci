@@ -14,7 +14,7 @@
 <script src="/static/js/jquery.slides.min.js"></script>
 <script src="/static/js/bootstrap.js"></script>
 <script src="/static/js/bootstrap-datetimepicker.min.js"></script>
-<script src="/static/js/jquery.ui.widget.js"></script>
+<script src="/static/js/ui/jquery.ui.widget.js"></script>
 <script src="/static/js/jquery.iframe-transport.js"></script>
 <script src="/static/js/jquery.fileupload.js"></script>
 <script src="/static/js/jquery.countdown.js"></script>
