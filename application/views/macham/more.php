@@ -49,3 +49,24 @@
 */
             }
             ?>
+<script>
+$(function () {
+    $('.info1').click(function() {
+        $(this).toggleClass(function() {
+            $('#view').remove();
+            var has = $(this).hasClass('open');
+            if(!has) {
+                var idx = this.id
+                $.ajax({
+                    type : 'post',
+                    url : '/macham/viewcomment',
+                    data : { srl : idx }
+                }).success(function(result) {
+                    $('#li'+idx).after(result);
+                });
+            }
+            return 'open';
+        });
+    });
+});
+</script>

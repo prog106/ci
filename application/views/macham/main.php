@@ -126,9 +126,9 @@ body { background-color:#EEE; }
             }
             ?>
             <li id="moreview">
-                <?=$paging;?>
-                <!-- button class="btn btn-inverse" id="more">more view...</button>
-                <input type="hidden" name="moreno" id="moreno" value="1" -->
+                <!-- ?=$paging;? -->
+                <button class="btn btn-inverse" id="more">more view...</button>
+                <input type="hidden" name="moreno" id="moreno" value="1">
             </li>
         </ul>
         <ul class="right">
