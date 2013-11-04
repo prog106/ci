@@ -4,8 +4,9 @@ class Start extends CI_Controller {
 //        header('Location: /adform');
 //        header('Location: /mumu');
 //        header('Location: /macham');
-        header('Location: /baby');
+//        header('Location: /baby');
 //        header('Location: /mysp');
+        header('Location: /welcome/rss');
     }
 }
 ?>
