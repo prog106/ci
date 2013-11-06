@@ -66,10 +66,12 @@ class Welcome extends CI_Controller {
     }
     public function rss()
     {
+        set_time_limit(0);
+        ini_set('memory_limit' ,-1);
 //        $rsshost['www'] = "http://www.ticketmonster.co.kr/";
         $rsshost['wvvw'] = "http://wvvw.ticketmonster.co.kr/";
-        $rsshost['w1'] = "http://w1.prog106.d1.co.kr/";
-        $rsshost['w2'] = "http://w2.prog106.d1.co.kr/";
+        $rsshost['w1'] = "http://w1.prog106.d1.tmon.co.kr/";
+        $rsshost['w2'] = "http://w2.prog106.d1.tmon.co.kr/";
         $rss['daily'] = "rss/daily?scode=9889&m=nomal";
         $rss['coup'] = "rss/couponmoa?scode=9889";
         $rss['coup_co'] = "rss/couponmoa_common?scode=9889";
@@ -79,8 +81,10 @@ class Welcome extends CI_Controller {
         $rss['portal'] = "rss/portal";
         $rss['olleh'] = "rss/olleh_daily?scode=9889";
         $rss['dealtable'] = "rss/dealtable?scode=9889";
+        $rss['couponmoachart'] = "rss/couponmoachart";
         $rss['shinhan'] = "rss/shinhancard?api_key=shinhan&secret=N1EB";
         $rss['naver'] = "Naverep/all.txt";
+        $rss['thinkware'] = "rss/thinkware";
 
         $host = $this->input->get('host');
         $url = $this->input->get('url');
