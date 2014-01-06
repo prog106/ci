@@ -36,7 +36,7 @@
 |
 */
 
-$hook['post_controller_constructo'][] = array(
+$hook['post_controller_constructor'][] = array(
     'function' => 'b_check',
     'filename' => 'browser_check.php',
     'filepath' => 'hooks'

@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
 <title>My Start Page</title>
 <!-- link href="/static/css/layout.css" rel="stylesheet" type="text/css" charset="utf-8"/>
 <link href="/static/css/uploadify.css" rel="stylesheet" type="text/css" charset="utf-8"/>
@@ -89,6 +90,10 @@
     }
 </style>
 <script>
+window.addEventListener('load', function() {
+    document.body.style.height = (document.documentElement.clientHeight + 50) + 'px';
+    window.scrollTo(0, 1);
+}, false);
 $(function(){
 	$('#slides').slidesjs({
 		width : 940,
@@ -97,7 +102,7 @@ $(function(){
 		effect : { slide : { speed : 1000 }, },
 		play : { auto : true, interval : 3000 }
     });
-    $('#mp_wrap1').slidesjs({
+    $('#s_home').slidesjs({
         width : 500,
         height : 700,
         navigation : false,
@@ -112,5 +117,42 @@ $(function(){
 		play : { auto : true, interval : 3000 }
     });
 });
+function viewTo(id) {
+    if(id == 'home') { id = ''; }
+    location.href='/start/'+id;
+}
 </script>
+<style>
+    html, body { height:100%; }
+    body { -webkit-text-size-adjust:none; }
+    body, p, ul, ol, li { margin:0;padding:0; }
+    ul, ol { list-style:none; }
+
+    .wrap_menu { width:auto; }
+    .h_menu { width:100%;height:30px;display:table; }
+    .h_menu li { cursor:pointer;text-align:center;width:20%;float:left;line-height:50px;font-size:12px; }
+    .h_menu .h_menu0 { background-color:#EEE; }
+    .h_menu .h_menu1 { background-color:#EEE; }
+    .h_menu .h_menu2 { background-color:#EEE; }
+    .h_menu .h_menu3 { background-color:#EEE; }
+    .h_menu .h_menu4 { background-color:#EEE; }
+    .home { margin:0 auto;margin-top:0px; }
+
+    .wrap_like { width:auto; }
+    .h_like { width:100%;height:30px;display:table; }
+    .h_like li { padding-left:20px;line-height:30px;font-size:12px; }
+
+    .wrap_love { width:auto; }
+    .h_love { width:100%;height:30px;display:table; }
+    .h_love li { padding-left:20px;line-height:30px;font-size:12px; }
+
+    .wrap_health { width:auto; }
+    .h_health { width:100%;height:30px;display:table; }
+    .h_health li { padding-left:20px;line-height:30px;font-size:12px; }
+
+    .wrap_favorite { width:auto; }
+    .h_favorite { width:100%;height:30px;display:table; }
+    .h_favorite li { padding-left:20px;line-height:30px;font-size:12px; }
+</style>
 </head>
+<body>
