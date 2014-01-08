@@ -153,6 +153,17 @@ function viewTo(id) {
     .wrap_favorite { width:auto; }
     .h_favorite { width:100%;height:30px;display:table; }
     .h_favorite li { padding-left:20px;line-height:30px;font-size:12px; }
+
+    .wrap_blog { width:auto; }
+    .h_blog { width:100%;display:table; }
+    .h_blog li { padding:20px 20px 0 20px;font-size:12px;float:left; }
+    .h_blog img { border:1px solid #DDD;padding:2px; }
+    .h_blog .logos { line-height:20px;position:absolute;margin-top:30px; }
+    .h_blog_main { width:100%; }
+    .h_blog_main h3 { border-bottom:1px solid #CC0; }
+    .h_blog_main li { padding-left:3px;font-size:12px; }
+    .h_blog_main .subinfo { line-height:30px;font-size:11px;color:#AAA; } 
+
 </style>
 </head>
 <body>

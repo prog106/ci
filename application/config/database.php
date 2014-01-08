@@ -81,7 +81,7 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
+	'hostname' => '127.0.0.1',
 	'username' => 'prog106',
 	'password' => 's100410',
 	'database' => 'prog106DB',
