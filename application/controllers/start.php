@@ -16,6 +16,14 @@ class Start extends CI_Controller {
         $xmlread = file_get_contents($url);
         return self::object2array(simplexml_load_string($xmlread, 'SimpleXMLElement', LIBXML_NOCDATA));
     }
+    private function imagegetext($fn) {
+        $ft = mime_content_type($fn);
+        $mt = explode('/',$ft);
+        if($mt[0] != 'image') return false;
+        $ft_array = array('jpeg' => 'jpg', 'vnd.microsoft.icon' => 'ico');
+        if(array_key_exists($mt[1], $ft_array)) $mt[1] = $ft_array[$mt[1]];
+        return $mt[1];
+    }
     function index() {
         $this->load->view('start/main');
         if(BROWSER_TYPE == 'W') {
@@ -29,6 +37,21 @@ class Start extends CI_Controller {
 
     }
     function love() {
+        //$dir = "/Volumes/PENDRIVE/photo/";
+        if(is_dir($dir)) {
+            if($opendir = opendir($dir)) {
+                while(false !== ($row = readdir($opendir))) {
+                    if($row != '.' && $row != '..') {
+                        $result = self::imagegetext($dir.$row);
+                        if(!$result) continue;
+                        $fn = md5(serialize(time().basename($dir.$row, '.'.$result))).'.'.$result;
+                        print_r($fn);
+                        echo "<br>";
+                    }
+                }
+                closedir($opendir);
+            }
+        }
         $this->load->view('start/love');
     }
     function health() {
