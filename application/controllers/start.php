@@ -24,13 +24,23 @@ class Start extends CI_Controller {
         if(array_key_exists($mt[1], $ft_array)) $mt[1] = $ft_array[$mt[1]];
         return $mt[1];
     }
+    function rpc() {
+        $this->load->library('xmls');
+        $data['name'] = 'lsk';
+        $data['wife'] = 'lhm';
+        $data['son'] = 'ljy';
+        $res = $this->xmls->getData('rpc_get', $data);
+        if($res['status'] != 'OK') {
+            $this->common->debug($res);
+        }
+        $this->common->debug($res['result']);
+    }
+    function login() {
+        $this->load->view('start/login');
+    }
     function index() {
         $this->load->view('start/main');
-        if(BROWSER_TYPE == 'W') {
-            echo "<!-- W -->";
-        } else if(BROWSER_TYPE == 'M') {
-            echo "<!-- M -->";
-        }
+        $this->common->debug_log(1);
     }
     function like() {
         $this->load->view('start/like');

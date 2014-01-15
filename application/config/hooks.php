@@ -36,11 +36,14 @@
 |
 */
 
+/*
+ * mobile check
 $hook['post_controller_constructor'][] = array(
     'function' => 'b_check',
     'filename' => 'browser_check.php',
     'filepath' => 'hooks'
 );
+*/
 
 /* End of file hooks.php */
 /* Location: ./application/config/hooks.php */

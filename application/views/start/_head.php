@@ -154,6 +154,14 @@ function viewTo(id) {
     .h_favorite { width:100%;height:30px;display:table; }
     .h_favorite li { padding-left:20px;line-height:30px;font-size:12px; }
 
+    .fwrap { width:900px;border:1px solid #000; }
+    .f1 { float:left;width:450px;border:1px solid #000; }
+    .f2 { margin-left:450px;width:450px;border:1px solid #000; }
+
+    .fwrap_f { width:100%;border:1px solid #000; }
+    .f1_f { width:100%;border:1px solid #000; }
+    .f2_f { width:100%;border:1px solid #000; }
+
     .wrap_blog { width:auto; }
     .h_blog { width:100%;display:table; }
     .h_blog li { padding:20px 20px 0 20px;font-size:12px;float:left; }
