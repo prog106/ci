@@ -19,4 +19,5 @@ $config['RPC_URL'] = array(
         'url' => '/rpc',
     ),
 );
+$config['Cookie_KEY'] = 'cookie';
 ?>

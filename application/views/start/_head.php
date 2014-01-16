@@ -7,10 +7,10 @@
 <title>My Start Page</title>
 <!-- link href="/static/css/layout.css" rel="stylesheet" type="text/css" charset="utf-8"/>
 <link href="/static/css/uploadify.css" rel="stylesheet" type="text/css" charset="utf-8"/>
-<link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" charset="utf-8"/>
 <link href="/static/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" charset="utf-8"/>
 <link href="/static/css/jquery.fileupload-ui.css" rel="stylesheet" type="text/css" charset="utf-8"/>
 <link href="/static/css/ui/jquery.ui.all.css" rel="stylesheet" type="text/css" charset="utf-8"/ -->
+<link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" charset="utf-8"/>
 <script src="/static/js/jquery-1.9.1.min.js"></script>
 <script src="/static/js/jquery.slides.min.js"></script>
 <!-- script src="/static/js/jquery.uploadify.min.js"></script>
@@ -153,6 +153,8 @@ function viewTo(id) {
     .wrap_favorite { width:auto; }
     .h_favorite { width:100%;height:30px;display:table; }
     .h_favorite li { padding-left:20px;line-height:30px;font-size:12px; }
+
+    .wrap_login { padding:10px; } 
 
     .fwrap { width:900px;border:1px solid #000; }
     .f1 { float:left;width:450px;border:1px solid #000; }

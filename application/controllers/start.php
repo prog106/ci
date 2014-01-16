@@ -2,12 +2,16 @@
 class Start extends CI_Controller {
 	function __construct() {
         parent::__construct();
+        self::logincheck();
         $this->load->model('dental', 'dental');
-        //$this->load->helper('url');
         $this->load->view('start/_head');
-        //$this->xml['info'] = $xml['channel']['image'];
-        //$this->xml['item'] = $xml['channel']['item'];
-        $this->load->view('start/menu');
+        $data['menu'] = array('home', 'blog', 'love', 'health', 'rpc', 'info', 'like', 'favorite');
+        $data['menu'] = array('home', 'health', 'info', 'like', 'favorite');
+        $data['user'] = array(
+            'usersrl' => $this->usersrl,
+            'username' => $this->username,
+        );
+        $this->load->view('start/menu', $data);
     }
     private function object2array($object) {
         return @json_decode(@json_encode($object),1);
@@ -24,6 +28,22 @@ class Start extends CI_Controller {
         if(array_key_exists($mt[1], $ft_array)) $mt[1] = $ft_array[$mt[1]];
         return $mt[1];
     }
+    public function logincheck() {
+        $is_login = $this->input->cookie('is_login');
+        if(!empty($is_login)) {
+            $this->load->library('encrypt');
+            $split = explode($this->config->item('Cookie_KEY'), $this->encrypt->decode($is_login),3);
+            $this->usersrl = $split[0];
+            $this->username = $split[1];
+        } else {
+            $this->usersrl = null;
+            $this->username = null;
+        }
+    }
+    function index() {
+        //$this->common->debug($_SERVER);
+        $this->load->view('start/main');
+    }
     function rpc() {
         $this->load->library('xmls');
         $data['name'] = 'lsk';
@@ -35,12 +55,12 @@ class Start extends CI_Controller {
         }
         $this->common->debug($res['result']);
     }
-    function login() {
-        $this->load->view('start/login');
-    }
-    function index() {
-        $this->load->view('start/main');
-        $this->common->debug_log(1);
+    function info() {
+        if(empty($this->usersrl)) {
+            $this->load->view('start/login');
+        } else {
+            $this->load->view('start/logout');
+        }
     }
     function like() {
         $this->load->view('start/like');

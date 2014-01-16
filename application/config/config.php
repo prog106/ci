@@ -276,7 +276,7 @@ $config['cache_path'] = '';
 |
 */
 // $config['encryption_key'] = '';
-$config['encryption_key'] = 'localhost';
+$config['encryption_key'] = 'prog106';
 
 /*
 |--------------------------------------------------------------------------
