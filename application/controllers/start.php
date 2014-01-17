@@ -5,8 +5,8 @@ class Start extends CI_Controller {
         self::logincheck();
         $this->load->model('dental', 'dental');
         $this->load->view('start/_head');
-        $data['menu'] = array('home', 'blog', 'love', 'health', 'rpc', 'info', 'like', 'favorite');
-        $data['menu'] = array('home', 'health', 'info', 'like', 'favorite');
+        $data['menu'] = array('home', 'blog', 'love', 'health', 'rpc', 'info', 'like', 'favorite', 'facebook');
+        $data['menu'] = array('home', 'health', 'info', 'facebook', 'favorite');
         $data['user'] = array(
             'usersrl' => $this->usersrl,
             'username' => $this->username,
@@ -61,6 +61,14 @@ class Start extends CI_Controller {
         } else {
             $this->load->view('start/logout');
         }
+    }
+    function facebook() {
+        /*$checkurl = 'http://developers.facebook.com/docs/plugins';
+        $checkurl = 'http://google.com/';
+        $checkurl = 'http://www.ticketmonster.co.kr/';
+        $res = file_get_contents('http://graph.facebook.com/?id='.$checkurl);
+        $this->common->debug($res);*/
+        $this->load->view('start/fb');
     }
     function like() {
         $this->load->view('start/like');
