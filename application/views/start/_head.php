@@ -76,6 +76,7 @@ function viewTo(id) {
 }
 </script>
 <style>
+    * { }
     html, body { height:100%; }
     body { -webkit-text-size-adjust:none; }
     body, p, ul, ol, li { margin:0;padding:0; }
