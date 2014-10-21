@@ -1,0 +1,13 @@
+total 48
+drwxr-xr-x  12 prog106  staff   408 10 21 17:09 .
+drwxr-xr-x  18 prog106  staff   612 10 21 12:43 ..
+-rw-r--r--@  1 prog106  staff  6148  3 15  2014 .DS_Store
+drwxr-xr-x  16 prog106  staff   544 10 21 12:23 .git
+-rwxr-xr-x   1 prog106  staff   282  2  5  2014 .htaccess
+drwxr-xr-x  16 prog106  staff   544 10 21 15:42 application
+-rwxr-xr-x   1 prog106  staff  9021 11 20  2013 index.php
+-rw-r--r--   1 prog106  staff     0 10 21 17:09 out.txt
+drwxr-xr-x   6 prog106  staff   204 12 23  2013 static
+drwxr-xr-x  10 prog106  staff   340 11 20  2013 system
+drwxr-xr-x   8 prog106  staff   272 11 20  2013 tests
+drwxr-xr-x   6 prog106  staff   204 11 20  2013 user_guide_src
