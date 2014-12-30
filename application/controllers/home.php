@@ -32,6 +32,7 @@ class Home extends CI_Controller {
 
     function index() {
         //self::follow("out.txt");
+        echo "home";
         die;
         echo "this";
         echo "what is". PHP_EOL;
