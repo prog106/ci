@@ -17,7 +17,7 @@ $config['RPC_URL'] = array(
         'host' => 'localhost',
         'port' => '80',
         'url' => '/rpc',
-    ),
+    )
 );
 $config['Cookie_KEY'] = 'cookie';
 ?>
